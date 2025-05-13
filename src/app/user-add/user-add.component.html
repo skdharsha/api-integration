@@ -1,0 +1,39 @@
+   <h1>{{ isViewMode ? 'User Profile' : (!userId ? 'Add New User' : 'Update User') }}</h1>
+
+<div class="container mt-5">
+  <form (ngSubmit)="createUser()" #userForm="ngForm">
+   
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input
+        type="text"
+        id="name"
+        class="form-control"
+        [(ngModel)]="newUser.name"
+        name="name"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="avatar" class="form-label">Avatar URL</label>
+      <input
+        type="text"
+        id="avatar"
+        class="form-control"
+        [(ngModel)]="newUser.avatar"
+        name="avatar"
+        required
+      />
+    </div>
+
+     <div *ngIf="!isViewMode">
+      <button type="submit" class="btn btn-primary">
+        {{ !userId ? 'Create User' : 'Update User' }}
+      </button>
+    </div>
+
+  
+
+  </form>
+</div>
