@@ -22,6 +22,8 @@ export class TaskModelsComponent implements OnInit {
     completed: false,
   }
 
+
+
   taskId!: number;
   isView: boolean = false;
   selectedStatus: 'all' | 'completed' | 'not' = 'all';
