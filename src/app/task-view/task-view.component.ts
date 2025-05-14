@@ -99,7 +99,7 @@ export class TaskViewComponent implements OnInit {
   }
 
   viewTask(taskId: number) {
-    this.router.navigate(['/task-view', taskId]);
+    this.router.navigate(['/task-view', taskId],{ queryParams: { view: true } });
 
   }
 }

@@ -47,7 +47,7 @@ export class UserAddComponent implements OnInit {
     if (!this.userId) {
       const postUser = {
         ...this.newUser,
-       
+
       }
 
       this.userService.addNewUser(postUser).subscribe(
