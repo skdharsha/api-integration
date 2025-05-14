@@ -36,11 +36,10 @@
         <div class="col d-flex gap-1">
             <input type="text" class="form-control" placeholder="Search by title, date, or user ID"
                 [(ngModel)]="searchText" (input)="filterTasks()" />
-            <!-- <button class="btn btn-outline-secondary" type="button" (click)="filterTasks()">Search</button> -->
         </div>
 
         <div class="col">
-            <button class="btn btn-primary" type="button">Add</button>
+            <button class="btn btn-primary" type="button" (click)="addTask()">Add</button>
         </div>
     </div>
 
@@ -69,14 +68,14 @@
 
                         <div class="d-flex gap-2 ms-3">
                             <button class="btn btn-sm btn-outline-primary" title="Edit Task"
-                                (click)="openEditTask(task)">
+                                (click)="editTask(task.id)">
                                 <i class="bi bi-pencil"></i>
                             </button>
                             <button class="btn btn-sm btn-outline-danger" title="Delete Task"
                                 (click)="deleteTask(task.id)">
                                 <i class="bi bi-trash3"></i>
                             </button>
-                            <button class="btn btn-sm btn-outline-info" title="View Task" (click)="openViewTask(task)">
+                            <button class="btn btn-sm btn-outline-info" title="View Task" (click)="viewTask(task.id)">
                                 <i class="bi bi-eye"></i>
                             </button>
                         </div>
@@ -92,49 +91,3 @@
         <p class="text-center text-muted">No tasks found.</p>
     </ng-template>
 </div>
-
-
-<!-- Edit/View Modal -->
-<div class="modal fade show d-block" tabindex="-1" role="dialog" *ngIf="selectedTask">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">
-                    {{ isViewMode ? 'View Task' : 'Edit Task' }}
-                </h5>
-                <button type="button" class="btn-close" (click)="closeModal()"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label class="form-label">Title</label>
-                        <input class="form-control" [(ngModel)]="selectedTask.title" name="title"
-                            [readonly]="isViewMode" />
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">User ID</label>
-                        <input class="form-control" [(ngModel)]="selectedTask.userId" name="userId"
-                            [readonly]="isViewMode" />
-                    </div>
-                    <div class="form-check mb-3">
-                        <input class="form-check-input" type="checkbox" id="completedCheck"
-                            [(ngModel)]="selectedTask.completed" name="completed" [disabled]="isViewMode" />
-                        <label class="form-check-label" for="completedCheck">
-                            Completed
-                        </label>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer" *ngIf="isEditMode">
-                <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
-                <!-- <button type="button" class="btn btn-success" (click)="saveTask()">Save</button> -->
-            </div>
-            <div class="modal-footer" *ngIf="isViewMode">
-                <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal backdrop -->
-<div class="modal-backdrop fade show" *ngIf="selectedTask"></div>

@@ -55,6 +55,10 @@ export class UserServiceService {
     return this.http.get<Task[]>(this.taskUrl);
   }
 
+  getTaskById(taskId : number, userId : number) : Observable<any>{
+    return this.http.get(`${this.taskUrl}/${userId}/${taskId}`)
+  }
+
   addNewTask(task: Task): Observable<any> {
     return this.http.post(this.taskUrl, task);
   }

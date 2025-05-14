@@ -1,1 +1,56 @@
-<p>task-models works!</p>
+<h1>Add New Task </h1>
+
+<div class="container mt-5">
+    <form (ngSubmit)="createTask()">
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Title</label>
+            <input type="text" id="name" class="form-control" name="name" [(ngModel)]="newTask.title" required />
+        </div>
+
+        <div class="mb-3 d-flex">
+            <div class="col">
+                <label for="avatar" class="form-label">User Id</label>
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        {{ selectedUserId === 'all' ? 'All Users' : 'User ' + selectedUserId }}
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" (click)="selectUser('all')">All</a></li>
+                        <li *ngFor="let user of ">
+                            <a class="dropdown-item" (click)="selectUser('all')">User {{ user }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col">
+                <label for="avatar" class="form-label">Status</label>
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        {{
+                        selectedStatus === 'all' ? 'All' :
+                        selectedStatus === 'completed' ? 'Completed' : 'Not Completed'
+                        }}
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" (click)="selectStatus('all')">All</a></li>
+                        <li><a class="dropdown-item" (click)="selectStatus('completed')">Completed</a></li>
+                        <li><a class="dropdown-item" (click)="selectStatus('not')">Not Completed</a></li>
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div>
+            <button type="submit" class="btn btn-primary">
+                Create
+            </button>
+        </div>
+
+
+
+    </form>
+</div>
