@@ -24,7 +24,7 @@ export interface Task {
 export class UserServiceService {
   private version = 'v1'
   private baseUrl = `https://63c2fff4b0c286fbe5f77ff5.mockapi.io/api/`; //'https://63c2fff4b0c286fbe5f77ff5.mockapi.io/api/v1/users';
-
+  private taskUrl = '/tasks';
 
   constructor(private http: HttpClient) { }
 
@@ -48,8 +48,6 @@ export class UserServiceService {
   editUser(id: number, editUser: any): Observable<any> {
     return this.http.put(this.baseUrl + this.version + `/users/${id}`, editUser);
   }
-
-  private taskUrl = '/tasks';
 
   getAllTasks(): Observable<Task[]> {
     return this.http.get<Task[]>(this.baseUrl + this.version + this.taskUrl);
