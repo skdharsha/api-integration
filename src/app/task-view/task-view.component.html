@@ -52,6 +52,7 @@
                     <th>Title</th>
                     <th>Created Date</th>
                     <th>Completed</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -66,7 +67,8 @@
                         <ng-template #notCompleted>
                             <i class="bi bi-x-circle-fill text-danger fs-5"></i>
                         </ng-template>
-
+                    </td>
+                    <td>
                         <div class="d-flex gap-2 ms-3">
                             <button class="btn btn-sm btn-outline-primary" title="Edit Task"
                                 (click)="openEditTask(task)">
