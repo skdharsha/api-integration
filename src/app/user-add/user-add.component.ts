@@ -17,6 +17,7 @@ export class UserAddComponent implements OnInit {
     name: '',
     avatar: ''
   };
+
   userId !: number;
   isViewMode: boolean = false;
 
@@ -46,7 +47,7 @@ export class UserAddComponent implements OnInit {
     if (!this.userId) {
       const postUser = {
         ...this.newUser,
-        createdAt: new Date().toISOString(),
+
       }
 
       this.userService.addNewUser(postUser).subscribe(

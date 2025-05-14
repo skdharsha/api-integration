@@ -1,1 +1,72 @@
-<p>task-models works!</p>
+<h1>{{ isView ? 'Task View' : (!taskId ? 'Add New Task' : 'Update Task') }}</h1>
+
+<div class="container mt-5">
+    <form (ngSubmit)="createTask()">
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Title</label>
+            <input type="text" id="name" class="form-control" name="name" [(ngModel)]="newTask.title" required />
+        </div>
+
+        <div class="mb-3 d-flex">
+            <div class="col">
+                <label for="avatar" class="form-label">User</label>
+                <div class="dropdown">
+                    @if(isView)
+                    {
+                    <button class="btn btn-outline-secondary" type="button">
+                        User {{newTask.userId}}
+                    </button>
+                    }@else {
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        {{ selectedUserId === 'all' ? 'All Users' : 'User ' + selectedUserId }}
+                    </button>
+                    }
+
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" (click)="selectUser('all')">All</a></li>
+                        <li *ngFor="let user of userIDs">
+                            <a class="dropdown-item" (click)="selectUser(user)">User {{ user }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col">
+                <label for="avatar" class="form-label">Status</label>
+                <div class="dropdown">
+                    @if(isView )
+                    {
+                    <button class="btn btn-outline-secondary" type="button">
+                        Status {{
+                        newTask.completed ? 'Completed' : 'Not Completed'
+                        }}
+                    </button>
+                    }@else {
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        {{
+                        selectedStatus === 'all' ? 'All' :
+                        selectedStatus === 'completed' ? 'Completed' : 'Not Completed'
+                        }}
+                    </button>
+                    }
+
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" (click)="selectStatus('all')">All</a></li>
+                        <li><a class="dropdown-item" (click)="selectStatus('completed')">Completed</a></li>
+                        <li><a class="dropdown-item" (click)="selectStatus('not')">Not Completed</a></li>
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div *ngIf="!isView">
+            <button type="submit" class="btn btn-primary">
+                {{ !taskId ? 'Create' : 'Update' }}
+            </button>
+        </div>
+
+    </form>
+</div>

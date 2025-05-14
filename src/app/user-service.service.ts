@@ -22,49 +22,53 @@ export interface Task {
   providedIn: 'root'
 })
 export class UserServiceService {
-
-  private baseUrl = 'https://63c2fff4b0c286fbe5f77ff5.mockapi.io/api/v1/users';
+  private version = 'v1'
+  private baseUrl = `https://63c2fff4b0c286fbe5f77ff5.mockapi.io/api/`; //'https://63c2fff4b0c286fbe5f77ff5.mockapi.io/api/v1/users';
 
 
   constructor(private http: HttpClient) { }
 
 
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.baseUrl);
+    return this.http.get<User[]>(this.baseUrl + this.version + '/users');
   }
 
   getUserById(userId: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${userId}`);
+    return this.http.get(this.baseUrl + this.version + `/users/${userId}`);
   }
 
   addNewUser(newUser: any): Observable<any> {
-    return this.http.post(this.baseUrl, newUser);
+    return this.http.post(this.baseUrl + this.version + '/users', newUser);
   }
 
   deleteUser(userId: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${userId}`);
+    return this.http.delete(this.baseUrl + this.version + `/users/${userId}`);
   }
 
   editUser(id: number, editUser: any): Observable<any> {
-    return this.http.put(`${this.baseUrl}/${id}`, editUser);
+    return this.http.put(this.baseUrl + this.version + `/users/${id}`, editUser);
   }
 
-  private taskUrl = 'https://63c2fff4b0c286fbe5f77ff5.mockapi.io/api/v1/tasks';
+  private taskUrl = '/tasks';
 
   getAllTasks(): Observable<Task[]> {
-    return this.http.get<Task[]>(this.taskUrl);
+    return this.http.get<Task[]>(this.baseUrl + this.version + this.taskUrl);
+  }
+
+  getTaskById(taskId: number): Observable<any> {
+    return this.http.get(this.baseUrl + this.version + this.taskUrl + `/${taskId}`)
   }
 
   addNewTask(task: Task): Observable<any> {
-    return this.http.post(this.taskUrl, task);
+    return this.http.post(this.baseUrl + this.version + this.taskUrl, task);
   }
 
   deleteTask(taskId: number): Observable<any> {
-    return this.http.delete(`${this.taskUrl}/${taskId}`);
+    return this.http.delete(this.baseUrl + this.version + this.taskUrl + `/${taskId}`);
   }
 
-  editTask(userid: number, id: number, edittask: any): Observable<any> {
-    return this.http.put(`${userid}/${this.taskUrl}/${id}`, edittask);
+  editTask(id: number, edittask: any): Observable<any> {
+    return this.http.put(this.baseUrl + this.version + this.taskUrl + `/${id}`, edittask);
   }
 
 

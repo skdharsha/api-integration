@@ -25,25 +25,6 @@ export class TaskViewComponent implements OnInit {
   isViewMode: boolean = false;
   isEditMode: boolean = false;
 
-  openViewTask(task: Task) {
-    this.selectedTask = { ...task };
-    this.isViewMode = true;
-    this.isEditMode = false;
-  }
-
-  openEditTask(task: Task) {
-    this.selectedTask = { ...task };
-    this.isEditMode = true;
-    this.isViewMode = false;
-  }
-
-
-  closeModal() {
-    this.selectedTask = null;
-    this.isViewMode = false;
-    this.isEditMode = false;
-  }
-
   constructor(private userservice: UserServiceService, private router: Router) { }
 
   ngOnInit(): void {
@@ -94,26 +75,16 @@ export class TaskViewComponent implements OnInit {
   }
 
 
-  // saveTask() {
-  //   if (!this.selectedTask) return;
-  //   if (this.isAddMode) {
 
-  //     this.userservice.addNewTask(this.newTask)
+  addTask() {
+    this.router.navigate(['/task-add']);
 
-  //   } else {
+  }
 
-  //     this.userservice.editTask(this.selectedTask.userId, this.selectedTask.id, this.selectedTask).subscribe(
-  //       () => {
-  //         console.log('Task updated successfully');
-  //         this.getTasks();
-  //         this.closeModal();
-  //       },
-  //       (error) => console.error(error)
-  //     );
-  //   }
 
-  // }
-
+  editTask(taskId: number) {
+    this.router.navigate(['/task-edit', taskId]);
+  }
 
   deleteTask(taskId: number) {
     this.userservice.deleteTask(taskId).subscribe(
@@ -125,6 +96,11 @@ export class TaskViewComponent implements OnInit {
         console.error(error);
       }
     );
+  }
+
+  viewTask(taskId: number) {
+    this.router.navigate(['/task-view', taskId],{ queryParams: { view: true } });
+
   }
 }
 
