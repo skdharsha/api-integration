@@ -78,9 +78,7 @@ export class TaskViewComponent implements OnInit {
 
   addTask() {
     this.router.navigate(['/task-add']);
-
   }
-
 
   editTask(taskId: number) {
     this.router.navigate(['/task-edit', taskId]);
@@ -90,7 +88,7 @@ export class TaskViewComponent implements OnInit {
     this.userservice.deleteTask(taskId).subscribe(
       () => {
         console.log('Task deleted successfully');
-        this.getTasks();
+        this.filterTasks();
       },
       (error) => {
         console.error(error);
