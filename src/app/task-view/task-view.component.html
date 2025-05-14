@@ -1,62 +1,140 @@
 <h2 class="mb-4 text-start">Task List</h2>
 
-<div class="container ">
-    <div class="row align-items-start">
+<div class="container">
+    <div class="row align-items-start mb-4">
+
         <div class="col">
             <div class="dropdown">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    All user Id
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    {{ selectedUserId === 'all' ? 'All Users' : 'User ' + selectedUserId }}
                 </button>
-                <ul class="dropdown-menu" *ngFor="let user of tasks">
-                    <li><a class="dropdown-item">User {{user.userId}}</a></li>
-
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" (click)="selectUser('all')">All</a></li>
+                    <li *ngFor="let user of userDropdown">
+                        <a class="dropdown-item" (click)="selectUser(user)">User {{ user }}</a>
+                    </li>
                 </ul>
             </div>
         </div>
-        <div class="col">
 
+        <div class="col">
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    {{
+                    selectedStatus === 'all' ? 'All' :
+                    selectedStatus === 'completed' ? 'Completed' : 'Not Completed'
+                    }}
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" (click)="selectStatus('all')">All</a></li>
+                    <li><a class="dropdown-item" (click)="selectStatus('completed')">Completed</a></li>
+                    <li><a class="dropdown-item" (click)="selectStatus('not')">Not Completed</a></li>
+                </ul>
+            </div>
         </div>
+
         <div class="col d-flex gap-1">
-            <input type="text" class="form-control" placeholder="Search..." aria-label="Input" [(ngModel)]="searchTask"
-                (input)="filterTask()" />
-            <button class="btn btn-outline-secondary" type="button">
-                Search
-            </button>
+            <input type="text" class="form-control" placeholder="Search by title, date, or user ID"
+                [(ngModel)]="searchText" (input)="filterTasks()" />
+            <!-- <button class="btn btn-outline-secondary" type="button" (click)="filterTasks()">Search</button> -->
+        </div>
+
+        <div class="col">
+            <button class="btn btn-primary" type="button">Add</button>
         </div>
     </div>
-    <div *ngIf="filtertask.length > 0 ; else noTask">
 
-
+    <div *ngIf="filteredTasks.length > 0; else noTask">
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">User Id</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Created Date</th>
-                    <th scope="col">Completed</th>
+                    <th>User Id</th>
+                    <th>Title</th>
+                    <th>Created Date</th>
+                    <th>Completed</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let task of filtertask">
-                    <td>{{task.userId}}</td>
-                    <td>{{task.title}}</td>
-                    <td>{{task.createdAt | date: 'd, MMMM y' }}</td>
-                    <td>
-                        @if(task.completed)
-                        {<i style="color:green;" class="bi bi-check-circle-fill"></i>}
-                        @else
-                        {<i style="color:red;" class="bi bi-x-circle-fill"></i>}
+                <tr *ngFor="let task of filteredTasks">
+                    <td>{{ task.userId }}</td>
+                    <td>{{ task.title }}</td>
+                    <td>{{ task.createdAt | date: 'd, MMMM y' }}</td>
+
+                    <td class="d-flex align-items-center gap-2 ">
+                        <i *ngIf="task.completed; else notCompleted"
+                            class="bi bi-check-circle-fill text-success fs-5"></i>
+                        <ng-template #notCompleted>
+                            <i class="bi bi-x-circle-fill text-danger fs-5"></i>
+                        </ng-template>
+
+                        <div class="d-flex gap-2 ms-3">
+                            <button class="btn btn-sm btn-outline-primary" title="Edit Task"
+                                (click)="openEditTask(task)">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" title="Delete Task"
+                                (click)="deleteTask(task.id)">
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-info" title="View Task" (click)="openViewTask(task)">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
                     </td>
 
                 </tr>
             </tbody>
         </table>
-
-
     </div>
-    <ng-template #noTask>
-        <p class="text-center text-muted">No users found.</p>
-    </ng-template>
 
+
+    <ng-template #noTask>
+        <p class="text-center text-muted">No tasks found.</p>
+    </ng-template>
 </div>
+
+
+<!-- Edit/View Modal -->
+<div class="modal fade show d-block" tabindex="-1" role="dialog" *ngIf="selectedTask">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    {{ isViewMode ? 'View Task' : 'Edit Task' }}
+                </h5>
+                <button type="button" class="btn-close" (click)="closeModal()"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Title</label>
+                        <input class="form-control" [(ngModel)]="selectedTask.title" name="title"
+                            [readonly]="isViewMode" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">User ID</label>
+                        <input class="form-control" [(ngModel)]="selectedTask.userId" name="userId"
+                            [readonly]="isViewMode" />
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="completedCheck"
+                            [(ngModel)]="selectedTask.completed" name="completed" [disabled]="isViewMode" />
+                        <label class="form-check-label" for="completedCheck">
+                            Completed
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" *ngIf="isEditMode">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+                <!-- <button type="button" class="btn btn-success" (click)="saveTask()">Save</button> -->
+            </div>
+            <div class="modal-footer" *ngIf="isViewMode">
+                <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal backdrop -->
+<div class="modal-backdrop fade show" *ngIf="selectedTask"></div>

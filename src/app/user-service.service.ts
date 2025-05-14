@@ -55,5 +55,17 @@ export class UserServiceService {
     return this.http.get<Task[]>(this.taskUrl);
   }
 
+  addNewTask(task: Task): Observable<any> {
+    return this.http.post(this.taskUrl, task);
+  }
+
+  deleteTask(taskId: number): Observable<any> {
+    return this.http.delete(`${this.taskUrl}/${taskId}`);
+  }
+
+  editTask(userid: number, id: number, edittask: any): Observable<any> {
+    return this.http.put(`${userid}/${this.taskUrl}/${id}`, edittask);
+  }
+
 
 }
